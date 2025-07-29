@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <title>منتجاتنا</title>
+  </head>
+  <style>
+    #products {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <h2>قائمة المنتجات</h2>
+    <div id="products"></div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+      // إعدادات Firebase (نفسها بالظبط)
+      const firebaseConfig = {
+        apiKey: "AIzaSyCSKBvATBOik2am510JJmoj2MYQszHy32Y",
+        authDomain: "fayad-8f902.firebaseapp.com",
+        projectId: "fayad-8f902",
+        storageBucket: "fayad-8f902.firebasestorage.app",
+        messagingSenderId: "513233944816",
+        appId: "1:513233944816:web:da524ebd1a7aac866d8235",
+        measurementId: "G-V76JL0C0L1",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const container = document.getElementById("products");
+
+      async function loadProducts() {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const box = document.createElement("div");
+          box.innerHTML = `
+          <h3>${data.name}</h3>
+          <p>السعر: ${data.price} جنيه</p>
+          <img src="${data.image}" alt="${data.name}" width="200" />
+          <hr/>
+        `;
+          container.appendChild(box);
+        });
+      }
+
+      loadProducts();
+    </script>
+  </body>
+</html>
