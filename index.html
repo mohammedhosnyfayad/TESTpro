@@ -3,155 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <title>منتجاتنا</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        font-family: "Cairo", sans-serif;
-        background-color: #f3f3f3;
-      }
-
-      #products {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        padding: 20px;
-        text-align: center;
-        justify-items: center;
-      }
-
-      .list {
-        background-color: #000;
-        color: rgb(255, 183, 0);
-        text-align: center;
-        width: 500px;
-        margin: 40px auto 20px;
-        padding: 10px;
-        border-radius: 30px;
-      }
-
-      .box-color {
-        background-color: #ddd;
-        border-radius: 30px;
-        width: 300px;
-        padding: 15px;
-      }
-
-      .box-color img {
-        width: 270px;
-        border-radius: 20px;
-      }
-
-      .order-btn {
-        background-color: #25d366;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 10px;
-      }
-
-      .footer {
-        background-color: #000;
-        color: red;
-        text-align: center;
-        padding: 10px 0;
-        margin-top: 50px;
-      }
-
-      .footer h1 {
-        margin: 0;
-        padding: 5px;
-        color: rgb(255, 183, 0);
-        border-bottom: 1px solid white;
-      }
-
-      .imags img {
-        width: 50px;
-        margin-right: 5px;
-      }
-
-      .imags {
-        padding: 10px;
-      }
-
-      /* Modal styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .modal-content {
-        background-color: white;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 15px;
-        width: 100%;
-        max-width: 500px;
-        direction: rtl;
-        text-align: center;
-      }
-
-      .modal-content h3 {
-        margin-top: 0;
-      }
-
-      .modal-content input,
-      .modal-content textarea {
-        width: 70%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-      }
-
-      .close {
-        float: left;
-        font-size: 24px;
-        cursor: pointer;
-      }
-
-      .send-btn {
-        background-color: #128c7e;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 6px;
-        width: 100%;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    </style>
+    <link rel="stylesheet" href="main.css" />
+    <style></style>
   </head>
   <body>
-    <h1 class="list">قائمة المنتجات</h1>
+    <!-- النافبار -->
+    <div class="navbar">
+      <div class="logo">اسم المعصره</div>
+      <div class="nav-links">
+        <a href="#">الواتس</a>
+        <a href="#">الفيس </a>
+        <a href="#">الاتصال </a>
+      </div>
+    </div>
+
+    <h2 class="all-products">كل المنتجات</h2>
     <div id="products"></div>
 
-    <!-- Modal -->
-    <div id="orderModal" class="modal">
+    <!-- ملخص الطلب -->
+    <div class="order-summary" id="orderSummary">
+      <h3>الطلبات المختارة:</h3>
+      <ul id="orderList"></ul>
+      <p><strong>الإجمالي:</strong> <span id="totalPrice">0</span> جنيه</p>
+      <button class="confirm-btn" onclick="sendOrder()">تأكيد الطلب</button>
+    </div>
+
+    <!-- نافذة الفورم -->
+    <div id="formModal" class="modal" style="display: none">
       <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h3>أدخل بياناتك للطلب</h3>
-        <input type="text" id="username" placeholder="الاسم" required />
-        <input type="tel" id="phone" placeholder="رقم الهاتف" required />
-        <input type="text" id="address" placeholder="العنوان" required />
-        <textarea id="notes" placeholder="ملاحظات (اختياري)"></textarea>
-        <button class="send-btn" id="sendOrder">إرسال الطلب</button>
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <h3>معلومات التوصيل</h3>
+        <input type="text" id="username" placeholder="الاسم" />
+        <input type="text" id="address" placeholder="العنوان بالتفصيل" />
+        <input type="text" id="number" placeholder="رقم الهاتف" />
+        <button class="send-btn" onclick="sendToWhatsApp()">إرسال الطلب</button>
       </div>
     </div>
 
@@ -167,7 +52,7 @@
         apiKey: "AIzaSyCSKBvATBOik2am510JJmoj2MYQszHy32Y",
         authDomain: "fayad-8f902.firebaseapp.com",
         projectId: "fayad-8f902",
-        storageBucket: "fayad-8f902.firebasestorage.app",
+        storageBucket: "fayad-8f902.appspot.com",
         messagingSenderId: "513233944816",
         appId: "1:513233944816:web:da524ebd1a7aac866d8235",
         measurementId: "G-V76JL0C0L1",
@@ -177,80 +62,118 @@
       const db = getFirestore(app);
 
       const container = document.getElementById("products");
-      const modal = document.getElementById("orderModal");
-      const closeModal = document.getElementById("closeModal");
-      const sendOrder = document.getElementById("sendOrder");
+      const orderList = document.getElementById("orderList");
+      const orderSummary = document.getElementById("orderSummary");
+      const totalPriceEl = document.getElementById("totalPrice");
 
-      let selectedProduct = "";
+      let orders = [];
+      const buttonMap = new Map();
 
       async function loadProducts() {
         const querySnapshot = await getDocs(collection(db, "products"));
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const name = data.name;
-          const price = data.price;
+          const productDiv = document.createElement("div");
+          productDiv.className = "box-color";
+          productDiv.innerHTML = `
+            <img src="${data.image}" alt="منتج" />
+            <h3>${data.name}</h3>
+            <div class="options">
+              <label>العدد: </label>
+              <input type="number" min="1" value="${
+                data.quantity || 1
+              }" style="width: 50px;" class="qty-input" />
+            </div>
+            <div class="options">
+              <label>السعر: </label>
+              <span class="price">${data.price}</span> جنيه
+            </div>
+            <button class="order-btn">اطلب الآن</button>
+          `;
 
-          const box = document.createElement("div");
-          box.className = "box-color";
+          const orderBtn = productDiv.querySelector(".order-btn");
+          const qtyInput = productDiv.querySelector(".qty-input");
 
-          box.innerHTML = `
-          <h1>${name}</h1>
-          <p>السعر: ${price} جنيه</p>
-          <img src="${data.image}" alt="${name}" />
-          <br />
-          <button class="order-btn">اطلب الآن</button>
-        `;
+          buttonMap.set(data.name, orderBtn);
 
-          box.querySelector(".order-btn").addEventListener("click", () => {
-            selectedProduct = `المنتج: ${name}\nالسعر: ${price} جنيه`;
-            modal.style.display = "block";
+          orderBtn.addEventListener("click", () => {
+            const qty = parseInt(qtyInput.value);
+            const price = parseFloat(data.price);
+            const total = qty * price;
+
+            orders.push({
+              name: data.name,
+              qty,
+              price,
+              total,
+            });
+
+            orderBtn.disabled = true;
+            updateOrderList();
           });
 
-          container.appendChild(box);
+          container.appendChild(productDiv);
         });
       }
 
-      loadProducts();
+      function updateOrderList() {
+        orderList.innerHTML = "";
+        let total = 0;
+        orders.forEach((item, index) => {
+          total += item.total;
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <button class="remove-btn" data-index="${index}">x</button>
+            <strong>${item.name}</strong><br />
+            عدد العناصر: ${item.qty}<br />
+            السعر: ${item.total} جنيه
+          `;
+          orderList.appendChild(li);
 
-      closeModal.onclick = () => {
-        modal.style.display = "none";
+          // زر الحذف
+          li.querySelector(".remove-btn").addEventListener("click", () => {
+            const btn = buttonMap.get(item.name);
+            if (btn) btn.disabled = false;
+
+            orders.splice(index, 1);
+            updateOrderList();
+          });
+        });
+
+        totalPriceEl.textContent = total;
+        orderSummary.style.display = orders.length > 0 ? "block" : "none";
+      }
+
+      window.sendOrder = function () {
+        document.getElementById("formModal").style.display = "flex";
       };
 
-      window.onclick = (e) => {
-        if (e.target == modal) {
-          modal.style.display = "none";
-        }
+      window.closeModal = function () {
+        document.getElementById("formModal").style.display = "none";
       };
 
-      sendOrder.onclick = () => {
-        const username = document.getElementById("username").value.trim();
-        const phone = document.getElementById("phone").value.trim();
+      window.sendToWhatsApp = function () {
+        const name = document.getElementById("username").value.trim();
         const address = document.getElementById("address").value.trim();
-        const notes = document.getElementById("notes").value.trim();
 
-        if (!username || !phone || !address) {
-          alert("من فضلك املأ جميع الحقول المطلوبة");
+        if (!name || !address) {
+          alert("من فضلك املأ الاسم والعنوان.");
           return;
         }
 
-        const message = `🛒 طلب جديد:\n\n${selectedProduct}\n\n👤 الاسم: ${username}\n📞 الهاتف: ${phone}\n🏠 العنوان: ${address}\n📝 ملاحظات: ${
-          notes || "لا يوجد"
-        }`;
-        const whatsappUrl = `https://wa.me/201281815635?text=${encodeURIComponent(
-          message
-        )}`;
-        window.open(whatsappUrl, "_blank");
-        modal.style.display = "none";
-      };
-    </script>
+        let msg = `🛒 طلب جديد:\n`;
+        orders.forEach((item) => {
+          msg += `- ${item.name}\nعدد: ${item.qty}\nالسعر: ${item.total} جنيه\n\n`;
+        });
 
-    <div class="footer">
-      <h1>الاتصال بنا</h1>
-      <div class="imags">
-        <img src="whatsapp.png" alt="" />
-        <img src="whatsapp.png" alt="" />
-        <img src="whatsapp.png" alt="" />
-      </div>
-    </div>
+        msg += `👤 الاسم: ${name}\n📍 العنوان: ${address}\n💰 الإجمالي: ${totalPriceEl.textContent} جنيه`;
+
+        const phone = "201018078546";
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, "_blank");
+      };
+
+      document.addEventListener("DOMContentLoaded", loadProducts);
+    </script>
   </body>
 </html>
